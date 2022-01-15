@@ -1,4 +1,4 @@
-import { Lang } from '../utils/i18n'
+import { Lang } from '../i18n/i18n'
 
 export type SignatureInfo = {
 	lang: Lang

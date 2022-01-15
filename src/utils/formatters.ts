@@ -31,3 +31,6 @@ export const wrapEmailHtml = (html: string) => `<!DOCTYPE html>
 
 export const toAssetPath = (filename: string) =>
 	`${process.env.PUBLIC_URL}/assets/${filename}`
+
+export const toContentPath = (filename: string) =>
+	`${process.env.PUBLIC_URL}/content/${filename}`

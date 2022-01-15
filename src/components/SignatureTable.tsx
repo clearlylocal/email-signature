@@ -3,7 +3,7 @@ import { colors, fonts } from '../styles/constants'
 import { SignatureInfo } from '../types/signatureInfo'
 import snarkdown from 'snarkdown'
 import { QrCode } from './QrCode'
-import { Translations, langs } from '../utils/i18n'
+import { Translations, langs } from '../i18n/i18n'
 import { toAssetPath } from '../utils/formatters'
 
 type Props = {

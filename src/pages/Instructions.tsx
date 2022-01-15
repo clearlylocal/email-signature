@@ -1,14 +1,13 @@
 import { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import instructionsMdUrl from '../content/instructions.md'
 import {
 	handleLinks,
 	prependPublicUrlToRelativeLinks,
 	renderAnchors,
 	scrollHashIntoView,
 } from '../utils/dom'
+import { toContentPath } from '../utils/formatters'
 import { onHtmlRender } from '../utils/react'
-import { snarkdown } from '../utils/snarkdown'
 
 export const Instructions: FC = () => {
 	const [html, setHtml] = useState('')
@@ -16,10 +15,8 @@ export const Instructions: FC = () => {
 	const history = useHistory()
 
 	useEffect(() => {
-		fetch(instructionsMdUrl, { cache: 'force-cache' }).then(async (res) => {
-			const content = await res.text()
-
-			const html = snarkdown(content)
+		fetch(toContentPath('instructions.html')).then(async (res) => {
+			const html = await res.text()
 
 			setHtml(html)
 		})

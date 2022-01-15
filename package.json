@@ -15,15 +15,17 @@
 		"snarkdown": "^2.0.0"
 	},
 	"scripts": {
-		"start": "react-app-rewired start",
+		"start": "PORT=3001 concurrently -k -n TSC,Node -c yellow,cyan \"npm run start-react\" \"npm run watch-content\"",
+		"start-react": "react-app-rewired start",
 		"build-timestamp": "node -e \"fs.writeFileSync('./public/build-timestamp.txt', String(Date.now()))\"",
 		"// chota-css-var-hack": "cp ./node_modules/chota/dist/chota.min.css ./src/styles/vendor/chota.min.css",
 		"//": "npm run chota-css-var-hack",
-		"build": "npm run build-timestamp & react-app-rewired build",
+		"build": "node scripts/renderContent.mjs && npm run build-timestamp && react-app-rewired build",
 		"test": "react-app-rewired test",
 		"eject": "react-scripts eject",
 		"predeploy": "npm run build",
-		"deploy": "gh-pages -d build"
+		"deploy": "gh-pages -d build",
+		"watch-content": "watch 'node scripts/renderContent.mjs' ./content --wait=1"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -48,18 +50,23 @@
 		"@testing-library/react": "^11.2.5",
 		"@testing-library/user-event": "^12.8.3",
 		"@types/jest": "^26.0.23",
+		"@types/js-yaml": "^4.0.5",
 		"@types/node": "^12.20.6",
 		"@types/qrcode": "^1.4.2",
 		"@types/react": "^17.0.3",
 		"@types/react-dom": "^17.0.3",
 		"@types/react-router-dom": "^5.1.8",
+		"concurrently": "^7.0.0",
 		"customize-cra": "^1.0.0",
 		"gh-pages": "^3.1.0",
+		"js-yaml": "^4.1.0",
 		"postcss-cli": "^8.3.1",
 		"postcss-custom-properties": "^8.0.11",
 		"react-app-rewire-babel-loader": "^0.1.1",
 		"react-app-rewired": "^2.1.8",
 		"react-scripts": "4.0.3",
-		"typescript": "^4.1.2"
+		"showdown": "^1.9.1",
+		"typescript": "^4.1.2",
+		"watch": "^1.0.2"
 	}
 }
