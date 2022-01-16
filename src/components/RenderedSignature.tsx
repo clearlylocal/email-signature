@@ -58,7 +58,7 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 		<>Loading...</>
 	) : (
 		<div>
-			<div style={{ width: 600 }}>
+			<div>
 				<SignatureTable
 					{...{
 						...props,
@@ -76,7 +76,14 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 					color: colors.smallText,
 					fontSize: 12,
 				}}
-				dangerouslySetInnerHTML={{ __html: snarkdown(tr.companyInfo) }}
+				dangerouslySetInnerHTML={{
+					__html: snarkdown(
+						tr.companyInfo.replace(
+							'{officeAddress}',
+							props.officeAddress,
+						),
+					),
+				}}
 			/>
 			<p
 				style={{

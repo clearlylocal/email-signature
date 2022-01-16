@@ -12,4 +12,5 @@ export type SignatureInfo = {
 		usedForWechat: boolean
 	}
 	email: string
+	officeAddress: string
 }

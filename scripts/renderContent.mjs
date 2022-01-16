@@ -10,7 +10,7 @@ try {
 	// i18n
 	const i18n = yaml.load(fs.readFileSync('./content/i18n.yml', 'utf8'))
 
-	fs.writeFileSync('./src/i18n/_i18n.json', JSON.stringify(i18n, null, '\t'))
+	fs.writeFileSync('./src/i18n/_i18n.json', JSON.stringify(i18n))
 
 	// instructions
 	const instructions = converter.makeHtml(

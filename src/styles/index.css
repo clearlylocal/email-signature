@@ -39,10 +39,12 @@
 		'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
 		'Droid Sans', 'Helvetica Neue', sans-serif;
 	--font-family-mono: monaco, 'Consolas', 'Lucida Console', monospace;
+
+	--grid-maxWidth: 120rem;
 }
 
 .spaced {
-	margin: calc(var(--grid-gutter) / 2) 0;
+	margin: calc(var(--grid-gutter) / 5) 0;
 }
 
 .pre-wrap {
@@ -92,7 +94,7 @@ main.container {
 }
 
 .magic-flex > * {
-	--gap: 0.5em;
+	--gap: 0.3rem;
 	width: 100%;
 }
 
@@ -118,10 +120,11 @@ main.container {
 	right: 0;
 }
 
-@media screen and (max-width: 599px) {
+@media screen and (max-width: 1199px) {
 	.magic-flex > :is(.col, [class*='col-'], [class^='col-']) {
 		margin-inline-start: 0;
 		margin-inline-end: 0;
+		width: 100%;
 	}
 
 	.secondary-field {
