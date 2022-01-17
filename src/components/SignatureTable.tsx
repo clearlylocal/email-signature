@@ -5,6 +5,9 @@ import snarkdown from 'snarkdown'
 import { QrCode } from './QrCode'
 import { Translations, langs } from '../i18n/i18n'
 import { toAssetPath } from '../utils/formatters'
+import { pipe } from 'fp-ts/lib/function'
+import { renderAsReactDom } from '../dom/renderAsReactDom'
+import { HtmlEmailLink } from './HtmlEmailLink'
 
 type Props = {
   translations: Translations
@@ -68,10 +71,9 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                               fontSize: '15.6px',
                               textAlign: 'center',
                             }}
-                            dangerouslySetInnerHTML={{
-                              __html: snarkdown(tr.followUs),
-                            }}
-                          />
+                          >
+                            {pipe(tr.followUs, snarkdown, renderAsReactDom)}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -120,7 +122,6 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                             >
                               <span
                                 style={{
-                                  color: colors.bigText,
                                   fontSize: '15.6px',
                                 }}
                               >
@@ -146,14 +147,11 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                             >
                               <span
                                 style={{
-                                  color: '#646464',
+                                  color: colors.bigText,
                                   fontSize: '15.6px',
                                 }}
                               >
-                                {[
-                                  props.name[currentLang],
-                                  props.name[altLang],
-                                ].filter(Boolean).join(' ')}
+                                {[props.name[currentLang], props.name[altLang]].filter(Boolean).join(' ')}
                               </span>
                             </span>
                             <br />
@@ -164,7 +162,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                 fontFamily: fonts.body,
                                 textTransform: 'initial',
                                 fontWeight: 'bold',
-                                color: '#646464',
+                                color: colors.bigText,
                               }}
                             >
                               {props.jobTitle}
@@ -186,84 +184,70 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                               }}
                             >
                               <tbody>
-                                <tr>
-                                  <td
-                                    style={{
-                                      padding: '0.01px',
-                                    }}
-                                  >
-                                    <table
-                                      cellPadding={0}
-                                      cellSpacing={0}
+                                {props.phone.number && (
+                                  <tr>
+                                    <td
                                       style={{
-                                        borderCollapse: 'collapse',
+                                        padding: '0.01px',
                                       }}
                                     >
-                                      <tbody>
-                                        <tr>
-                                          <td
-                                            style={{
-                                              lineHeight: '0%',
-                                              padding: '0.01px 0.01px 6px 0.01px',
-                                            }}
-                                          >
-                                            <table
-                                              cellPadding={0}
-                                              cellSpacing={0}
+                                      <table
+                                        cellPadding={0}
+                                        cellSpacing={0}
+                                        style={{
+                                          borderCollapse: 'collapse',
+                                        }}
+                                      >
+                                        <tbody>
+                                          <tr>
+                                            <td
                                               style={{
-                                                borderCollapse: 'collapse',
-                                                lineHeight: '14px',
-                                                fontSize: '12px',
-                                                fontFamily: fonts.body,
+                                                lineHeight: '0%',
+                                                padding: '0.01px 0.01px 6px 0.01px',
                                               }}
                                             >
-                                              <tbody>
-                                                <tr>
-                                                  <td
-                                                    style={{
-                                                      padding: '0.01px',
-                                                      fontFamily: fonts.body,
-                                                      fontSize: '12px',
-                                                    }}
-                                                  >
-                                                    <a
-                                                      href={`tel:${props.phone}`}
-                                                      target='_blank'
-                                                      rel='noreferrer'
+                                              <table
+                                                cellPadding={0}
+                                                cellSpacing={0}
+                                                style={{
+                                                  borderCollapse: 'collapse',
+                                                  lineHeight: '14px',
+                                                  fontSize: '12px',
+                                                  fontFamily: fonts.body,
+                                                }}
+                                              >
+                                                <tbody>
+                                                  <tr>
+                                                    <td
                                                       style={{
-                                                        color: '#212121',
-                                                        fontSize: '12px',
+                                                        padding: '0.01px',
                                                         fontFamily: fonts.body,
+                                                        fontSize: '12px',
+                                                        color: colors.smallText,
                                                       }}
                                                     >
-                                                      <span
-                                                        style={{
-                                                          lineHeight: '1.2',
-                                                          fontFamily: fonts.body,
-                                                          whiteSpace: 'nowrap',
-                                                          fontSize: '12px',
-                                                        }}
-                                                      >
-                                                        {props.phone.number}
-                                                      </span>
-                                                    </a>
-                                                    {props.phone.usedForWechat ? ` ${tr.wechat}` : null}
-                                                  </td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
-                                          </td>
-                                          <td
-                                            style={{
-                                              lineHeight: '0%',
-                                              padding: '0.01px 0.01px 6px 0.01px',
-                                            }}
-                                          ></td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
+                                                      <HtmlEmailLink
+                                                        href={`tel:${props.phone.number}`}
+                                                        text={props.phone.number}
+                                                      />
+                                                      {props.phone.usedForWechat ? ` ${tr.wechat}` : null}
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                            <td
+                                              style={{
+                                                lineHeight: '0%',
+                                                padding: '0.01px 0.01px 6px 0.01px',
+                                              }}
+                                            ></td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                )}
                                 <tr>
                                   <td
                                     style={{
@@ -305,27 +289,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                                       fontSize: '12px',
                                                     }}
                                                   >
-                                                    <a
-                                                      href={`mailto:${props.email}`}
-                                                      target='_blank'
-                                                      rel='noreferrer'
-                                                      style={{
-                                                        color: '#212121',
-                                                        fontSize: '12px',
-                                                        fontFamily: fonts.body,
-                                                      }}
-                                                    >
-                                                      <span
-                                                        style={{
-                                                          lineHeight: '1.2',
-                                                          fontFamily: fonts.body,
-                                                          whiteSpace: 'nowrap',
-                                                          fontSize: '12px',
-                                                        }}
-                                                      >
-                                                        {props.email}
-                                                      </span>
-                                                    </a>
+                                                    <HtmlEmailLink href={`mailto:${props.email}`} text={props.email} />
                                                   </td>
                                                 </tr>
                                               </tbody>

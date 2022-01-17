@@ -7,6 +7,8 @@ import { SignatureTable } from './SignatureTable'
 import { getQrCode } from '../utils/qrCode'
 import { toAssetPath } from '../utils/formatters'
 import { waitForImageLoad } from '../dom/waitForImageLoad'
+import { pipe } from 'fp-ts/lib/function'
+import { renderAsReactDom } from '../dom/renderAsReactDom'
 
 type LoadingState =
 	| {
@@ -57,7 +59,7 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 	return data.loading ? (
 		<>Loading...</>
 	) : (
-		<div>
+		<div style={{ fontFamily: fonts.body, color: colors.smallText }}>
 			<div>
 				<SignatureTable
 					{...{
@@ -76,15 +78,16 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 					color: colors.smallText,
 					fontSize: 12,
 				}}
-				dangerouslySetInnerHTML={{
-					__html: snarkdown(
-						tr.companyInfo.replace(
-							'{officeAddress}',
-							props.officeAddress,
-						),
+			>
+				{pipe(
+					tr.companyInfo.replace(
+						'{officeAddress}',
+						props.officeAddress,
 					),
-				}}
-			/>
+					snarkdown,
+					renderAsReactDom,
+				)}
+			</p>
 			<p
 				style={{
 					fontFamily: fonts.body,
@@ -93,10 +96,9 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 					color: colors.smallText,
 					fontSize: 12,
 				}}
-				dangerouslySetInnerHTML={{
-					__html: snarkdown(tr.privacyNotice),
-				}}
-			/>
+			>
+				{pipe(tr.privacyNotice, snarkdown, renderAsReactDom)}
+			</p>
 		</div>
 	)
 }

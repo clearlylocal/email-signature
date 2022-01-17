@@ -25,11 +25,9 @@ const defaultValues: SignatureInfo =
 	JSON.parse(localStorage.getItem('signatureCreator') ?? 'null') ?? init
 
 export const SignatureCreatorForm: FC = () => {
-	const { register, handleSubmit, getValues, reset } = useForm<SignatureInfo>(
-		{
-			defaultValues,
-		},
-	)
+	const { register, handleSubmit, getValues } = useForm<SignatureInfo>({
+		defaultValues,
+	})
 
 	const formRef = useRef<HTMLFormElement>(null)
 
@@ -148,7 +146,6 @@ export const SignatureCreatorForm: FC = () => {
 							<label>
 								Phone number (including country code)
 								<input
-									required
 									type='tel'
 									name='phone.number'
 									ref={register}
