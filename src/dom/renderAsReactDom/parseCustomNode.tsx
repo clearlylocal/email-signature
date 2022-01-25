@@ -8,10 +8,9 @@ export const parseCustomNode = (node: Node) => {
 			const node_ = node as HTMLAnchorElement
 
 			return (
-				<HtmlEmailLink
-					href={node_.href}
-					text={node.textContent ?? ''}
-				/>
+				<HtmlEmailLink href={node_.href}>
+					{node.textContent ?? ''}
+				</HtmlEmailLink>
 			)
 		default:
 			return null

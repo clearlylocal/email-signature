@@ -99,6 +99,34 @@ export const SignatureCreatorForm: FC = () => {
 					onInput={handleSubmit(changeHandler)}
 				>
 					<div className='magic-flex'>
+						<div className='spaced'>
+							<fieldset>
+								<legend>Template language</legend>
+								<label>
+									English
+									<input
+										required
+										type='radio'
+										name='lang'
+										value='en'
+										ref={register}
+										defaultChecked
+									/>
+								</label>{' '}
+								<label>
+									Chinese
+									<input
+										required
+										type='radio'
+										name='lang'
+										value='zh'
+										ref={register}
+									/>
+								</label>
+							</fieldset>
+							<div className='validation-msg'></div>
+						</div>
+
 						<div className='spaced col-first'>
 							<label>
 								English name
@@ -190,33 +218,6 @@ export const SignatureCreatorForm: FC = () => {
 									),
 								)}
 							</datalist>
-						</div>
-
-						<div className='spaced'>
-							<fieldset>
-								<legend>Signature language</legend>
-								<label>
-									English
-									<input
-										required
-										type='radio'
-										name='lang'
-										value='en'
-										ref={register}
-										defaultChecked
-									/>
-								</label>{' '}
-								<label>
-									Chinese
-									<input
-										required
-										type='radio'
-										name='lang'
-										value='zh'
-										ref={register}
-									/>
-								</label>
-							</fieldset>
 						</div>
 					</div>
 				</form>

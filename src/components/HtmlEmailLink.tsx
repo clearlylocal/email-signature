@@ -3,10 +3,9 @@ import { colors, fonts } from '../styles/constants'
 
 type Props = {
 	href: string
-	text: string
 }
 
-export const HtmlEmailLink: FC<Props> = ({ href, text }) => {
+export const HtmlEmailLink: FC<Props> = ({ href, children }) => {
 	return (
 		<a
 			target='_blank'
@@ -26,7 +25,7 @@ export const HtmlEmailLink: FC<Props> = ({ href, text }) => {
 					fontSize: '12px',
 				}}
 			>
-				{text}
+				{children}
 			</span>
 		</a>
 	)

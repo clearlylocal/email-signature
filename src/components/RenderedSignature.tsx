@@ -1,14 +1,15 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, Fragment, useEffect, useState } from 'react'
 import { colors, fonts } from '../styles/constants'
 import { SignatureInfo } from '../types/signatureInfo'
 import snarkdown from 'snarkdown'
-import { i18n } from '../i18n/i18n'
+import { i18n, localeAgnostic } from '../i18n/i18n'
 import { SignatureTable } from './SignatureTable'
 import { getQrCode } from '../utils/qrCode'
 import { toAssetPath } from '../utils/formatters'
 import { waitForImageLoad } from '../dom/waitForImageLoad'
 import { pipe } from 'fp-ts/lib/function'
 import { renderAsReactDom } from '../dom/renderAsReactDom'
+import { HtmlEmailLink } from './HtmlEmailLink'
 
 type LoadingState =
 	| {
@@ -24,6 +25,12 @@ const initialLoadingState = {
 	loading: true,
 	qrCodeDataUri: undefined,
 } as LoadingState
+
+const BareLink: FC<{ href: string }> = ({ href }) => (
+	<HtmlEmailLink href={href}>
+		{href.replace(/^https?:\/\//, '')}
+	</HtmlEmailLink>
+)
 
 export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 	props,
@@ -79,14 +86,15 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 					fontSize: 12,
 				}}
 			>
-				{pipe(
-					tr.companyInfo.replace(
-						'{officeAddress}',
-						props.officeAddress,
-					),
-					snarkdown,
-					renderAsReactDom,
-				)}
+				{[
+					localeAgnostic.companyName,
+					props.officeAddress,
+					<BareLink href={localeAgnostic.websiteUrl} />,
+				]
+					.flatMap((x, i, a) => (i === a.length - 1 ? x : [x, ' | ']))
+					.map((x, i) => (
+						<Fragment key={i}>{x}</Fragment>
+					))}
 			</p>
 			<p
 				style={{

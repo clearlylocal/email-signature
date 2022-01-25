@@ -228,8 +228,10 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                                     >
                                                       <HtmlEmailLink
                                                         href={`tel:${props.phone.number}`}
-                                                        text={props.phone.number}
-                                                      />
+
+                                                      >
+                                                        {props.phone.number}
+                                                      </HtmlEmailLink>
                                                       {props.phone.usedForWechat ? ` ${tr.wechat}` : null}
                                                     </td>
                                                   </tr>
@@ -289,7 +291,9 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                                       fontSize: '12px',
                                                     }}
                                                   >
-                                                    <HtmlEmailLink href={`mailto:${props.email}`} text={props.email} />
+                                                    <HtmlEmailLink href={`mailto:${props.email}`}>
+                                                      {props.email}
+                                                    </HtmlEmailLink>
                                                   </td>
                                                 </tr>
                                               </tbody>
