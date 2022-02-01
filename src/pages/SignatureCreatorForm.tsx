@@ -225,10 +225,7 @@ export const SignatureCreatorForm: FC = () => {
 				<div className='col'>
 					<div className='spaced'>
 						<output>
-							<IsolatedStyles
-								id='rendered-signature-container'
-								mode='open'
-							>
+							<IsolatedStyles id='rendered-signature-container'>
 								<RenderedSignature
 									{...{ ...values, qrCodeSize }}
 								/>
