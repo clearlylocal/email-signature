@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { colors, fonts } from '../styles/constants'
+import { colors, fonts, sizes } from '../styles/constants'
 import { SignatureInfo } from '../types/signatureInfo'
 import snarkdown from 'snarkdown'
 import { QrCode } from './QrCode'
@@ -38,7 +38,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                   <td
                     style={{
                       verticalAlign: 'top',
-                      padding: '0.01px 14px 0.01px 0.01px',
+                      padding: `0.01px ${sizes.paddingLarge}px 0.01px 0.01px`,
                     }}
                   >
                     <table
@@ -66,8 +66,8 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                               fontFamily: fonts.body,
                               lineHeight: '1.15',
                               color: colors.brand,
-                              padding: '6px 0.01px 0.01px 0.01px',
-                              fontSize: '15.6px',
+                              padding: `${sizes.paddingSmall}px 0.01px 0.01px 0.01px`,
+                              fontSize: sizes.textLarge,
                               textAlign: 'center',
                             }}
                             dangerouslySetInnerHTML={{
@@ -86,14 +86,14 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                       padding: '0.01px',
                       borderRight: `2px solid ${colors.brand}`,
                       height: '1px',
-                      fontSize: '1pt',
+                      fontSize: 1,
                     }}
                   >
                     &nbsp;
                   </td>
                   <td
                     style={{
-                      padding: '0.01px 14px 0.01px 14px',
+                      padding: `0.01px ${sizes.paddingLarge}px 0.01px ${sizes.paddingLarge}px`,
                       verticalAlign: 'top',
                     }}
                     valign='top'
@@ -122,10 +122,10 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                             >
                               <span
                                 style={{
-                                  fontSize: '15.6px',
+                                  fontSize: sizes.textLarge,
                                 }}
                               >
-                                <img width={150} src={toAssetPath(tr.logoFull)} alt='' />
+                                <img width={sizes.logoWidth} src={toAssetPath(tr.logoFull)} alt='' />
                               </span>
                             </span>
                           </td>
@@ -135,7 +135,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                           <td
                             style={{
                               lineHeight: '1.2',
-                              padding: '0.01px 0.01px 12px 0.01px',
+                              padding: `0.01px 0.01px ${sizes.paddingMedium}px 0.01px`,
                             }}
                           >
                             <span
@@ -148,7 +148,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                               <span
                                 style={{
                                   color: colors.bigText,
-                                  fontSize: '15.6px',
+                                  fontSize: sizes.textLarge,
                                 }}
                                 dangerouslySetInnerHTML={{
                                   __html: safelyWrapCjk([props.name[currentLang], props.name[altLang]].filter(Boolean).join(' '))
@@ -158,7 +158,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                             <br />
                             <span
                               style={{
-                                fontSize: '13.2px',
+                                fontSize: sizes.textMedium,
                                 letterSpacing: '0px',
                                 fontFamily: fonts.body,
                                 textTransform: 'initial',
@@ -205,7 +205,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                             <td
                                               style={{
                                                 lineHeight: '0%',
-                                                padding: '0.01px 0.01px 6px 0.01px',
+                                                padding: `0.01px 0.01px ${sizes.paddingSmall}px 0.01px`,
                                               }}
                                             >
                                               <table
@@ -214,7 +214,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                                 style={{
                                                   borderCollapse: 'collapse',
                                                   lineHeight: '14px',
-                                                  fontSize: '12px',
+                                                  fontSize: sizes.textSmall,
                                                   fontFamily: fonts.body,
                                                 }}
                                               >
@@ -224,7 +224,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                                       style={{
                                                         padding: '0.01px',
                                                         fontFamily: fonts.body,
-                                                        fontSize: '12px',
+                                                        fontSize: sizes.textSmall,
                                                         color: colors.smallText,
                                                       }}
                                                     >
@@ -243,7 +243,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                             <td
                                               style={{
                                                 lineHeight: '0%',
-                                                padding: '0.01px 0.01px 6px 0.01px',
+                                                padding: `0.01px 0.01px ${sizes.paddingSmall}px 0.01px`,
                                               }}
                                             ></td>
                                           </tr>
@@ -270,7 +270,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                           <td
                                             style={{
                                               lineHeight: '0%',
-                                              padding: '0.01px 0.01px 6px 0.01px',
+                                              padding: `0.01px 0.01px ${sizes.paddingSmall}px 0.01px`,
                                             }}
                                           >
                                             <table
@@ -279,7 +279,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                               style={{
                                                 borderCollapse: 'collapse',
                                                 lineHeight: '14px',
-                                                fontSize: '12px',
+                                                fontSize: sizes.textSmall,
                                                 fontFamily: fonts.body,
                                               }}
                                             >
@@ -290,7 +290,7 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                                       padding: '0.01px',
                                                       colorScheme: 'light only',
                                                       fontFamily: fonts.body,
-                                                      fontSize: '12px',
+                                                      fontSize: sizes.textSmall,
                                                     }}
                                                   >
                                                     <HtmlEmailLink href={`mailto:${props.email}`}>

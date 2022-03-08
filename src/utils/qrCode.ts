@@ -63,6 +63,9 @@ const paintQrToCanvas = (
 	})
 
 export const getQrCode = async ({ size, url, logo }: QrCodeInit) => {
+	// leads to much smoother rendering
+	size *= 3
+
 	const canvas = document.createElement('canvas')
 
 	canvas.width = size

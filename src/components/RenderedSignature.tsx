@@ -1,5 +1,5 @@
 import { FC, Fragment, useEffect, useState } from 'react'
-import { colors, fonts } from '../styles/constants'
+import { colors, fonts, sizes } from '../styles/constants'
 import { SignatureInfo } from '../types/signatureInfo'
 import snarkdown from 'snarkdown'
 import { i18n, localeAgnostic } from '../i18n/i18n'
@@ -80,9 +80,9 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 				style={{
 					fontFamily: fonts.body,
 					lineHeight: 1.6,
-					margin: '12px 0.01px 0.01px 0.01px',
+					margin: `${sizes.paddingMedium}px 0.01px`,
 					color: colors.smallText,
-					fontSize: 12,
+					fontSize: sizes.textSmall,
 				}}
 			>
 				<span
@@ -102,9 +102,9 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 				style={{
 					fontFamily: fonts.body,
 					lineHeight: 1.6,
-					margin: '12px 0.01px 0.01px 0.01px',
+					margin: `${sizes.paddingMedium}px 0.01px`,
 					color: colors.smallText,
-					fontSize: 12,
+					fontSize: sizes.textSmall,
 				}}
 				dangerouslySetInnerHTML={{
 					__html: pipe(tr.privacyNotice, snarkdown, safelyWrapCjk),

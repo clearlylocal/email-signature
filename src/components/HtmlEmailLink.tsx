@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { colors, fonts } from '../styles/constants'
+import { colors, fonts, sizes } from '../styles/constants'
 
 type Props = {
 	href: string
@@ -12,7 +12,7 @@ export const HtmlEmailLink: FC<Props> = ({ href, children }) => {
 			rel='noreferrer'
 			style={{
 				color: colors.link,
-				fontSize: '12px',
+				fontSize: sizes.textSmall,
 				fontFamily: fonts.body,
 			}}
 			href={href}
@@ -22,7 +22,7 @@ export const HtmlEmailLink: FC<Props> = ({ href, children }) => {
 					lineHeight: '1.2',
 					fontFamily: fonts.body,
 					whiteSpace: 'nowrap',
-					fontSize: '12px',
+					fontSize: sizes.textSmall,
 				}}
 			>
 				{children}

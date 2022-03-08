@@ -5,9 +5,8 @@ import { RenderedSignature } from '../components/RenderedSignature'
 import { copyHtml } from '../dom/copyHtml'
 import { useHtmlId } from '../hooks/useHtmlId'
 import { localeAgnostic } from '../i18n/i18n'
+import { sizes } from '../styles/constants'
 import { SignatureInfo } from '../types/signatureInfo'
-
-const qrCodeSize = 120
 
 const init: SignatureInfo = {
 	lang: 'en',
@@ -227,7 +226,10 @@ export const SignatureCreatorForm: FC = () => {
 						<output>
 							<IsolatedStyles id='rendered-signature-container'>
 								<RenderedSignature
-									{...{ ...values, qrCodeSize }}
+									{...{
+										...values,
+										qrCodeSize: sizes.qrCode,
+									}}
 								/>
 							</IsolatedStyles>
 						</output>
