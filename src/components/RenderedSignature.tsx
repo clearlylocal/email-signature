@@ -5,10 +5,9 @@ import snarkdown from 'snarkdown'
 import { i18n, localeAgnostic } from '../i18n/i18n'
 import { SignatureTable } from './SignatureTable'
 import { getQrCode } from '../utils/qrCode'
-import { toAssetPath } from '../utils/formatters'
+import { toAssetPath, safelyWrapCjk } from '../utils/formatters'
 import { waitForImageLoad } from '../dom/waitForImageLoad'
 import { pipe } from 'fp-ts/lib/function'
-import { renderAsReactDom } from '../dom/renderAsReactDom'
 import { HtmlEmailLink } from './HtmlEmailLink'
 
 type LoadingState =
@@ -86,15 +85,18 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 					fontSize: 12,
 				}}
 			>
-				{[
-					localeAgnostic.companyName,
-					props.officeAddress,
-					<BareLink href={localeAgnostic.websiteUrl} />,
-				]
-					.flatMap((x, i, a) => (i === a.length - 1 ? x : [x, ' | ']))
-					.map((x, i) => (
-						<Fragment key={i}>{x}</Fragment>
-					))}
+				<span
+					dangerouslySetInnerHTML={{
+						__html: safelyWrapCjk(
+							[
+								localeAgnostic.companyName,
+								props.officeAddress,
+							].join(' | '),
+						),
+					}}
+				/>
+				{' | '}
+				<BareLink href={localeAgnostic.websiteUrl} />,
 			</p>
 			<p
 				style={{
@@ -104,9 +106,10 @@ export const RenderedSignature: FC<SignatureInfo & { qrCodeSize: number }> = (
 					color: colors.smallText,
 					fontSize: 12,
 				}}
-			>
-				{pipe(tr.privacyNotice, snarkdown, renderAsReactDom)}
-			</p>
+				dangerouslySetInnerHTML={{
+					__html: pipe(tr.privacyNotice, snarkdown, safelyWrapCjk),
+				}}
+			/>
 		</div>
 	)
 }

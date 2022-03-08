@@ -6,5 +6,6 @@ export const colors = {
 }
 
 export const fonts = {
-	body: '"Arial", "Microsoft YaHei", "微软雅黑", "微軟雅黑", sans-serif',
+	body: '"Arial", sans-serif',
+	cjk: '黑体, 黑體, SimHei',
 }

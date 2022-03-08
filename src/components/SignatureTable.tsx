@@ -4,9 +4,8 @@ import { SignatureInfo } from '../types/signatureInfo'
 import snarkdown from 'snarkdown'
 import { QrCode } from './QrCode'
 import { Translations, langs } from '../i18n/i18n'
-import { toAssetPath } from '../utils/formatters'
+import { safelyWrapCjk, toAssetPath } from '../utils/formatters'
 import { pipe } from 'fp-ts/lib/function'
-import { renderAsReactDom } from '../dom/renderAsReactDom'
 import { HtmlEmailLink } from './HtmlEmailLink'
 
 type Props = {
@@ -71,9 +70,10 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                               fontSize: '15.6px',
                               textAlign: 'center',
                             }}
-                          >
-                            {pipe(tr.followUs, snarkdown, renderAsReactDom)}
-                          </td>
+                            dangerouslySetInnerHTML={{
+                              __html: pipe(tr.followUs, snarkdown, safelyWrapCjk)
+                            }}
+                          />
                         </tr>
                       </tbody>
                     </table>
@@ -150,9 +150,10 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                   color: colors.bigText,
                                   fontSize: '15.6px',
                                 }}
-                              >
-                                {[props.name[currentLang], props.name[altLang]].filter(Boolean).join(' ')}
-                              </span>
+                                dangerouslySetInnerHTML={{
+                                  __html: safelyWrapCjk([props.name[currentLang], props.name[altLang]].filter(Boolean).join(' '))
+                                }}
+                              />
                             </span>
                             <br />
                             <span
@@ -164,9 +165,10 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                 fontWeight: 'bold',
                                 color: colors.bigText,
                               }}
-                            >
-                              {props.jobTitle}
-                            </span>
+                              dangerouslySetInnerHTML={{
+                                __html: safelyWrapCjk(props.jobTitle)
+                              }}
+                            />
                           </td>
                         </tr>
                         <tr>

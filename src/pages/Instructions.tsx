@@ -34,6 +34,6 @@ export const Instructions: FC = () => {
 				scrollHashIntoView(el)
 			})}
 			dangerouslySetInnerHTML={{ __html: html }}
-		></div>
+		/>
 	)
 }

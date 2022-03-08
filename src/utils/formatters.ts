@@ -1,4 +1,5 @@
 import { regex } from 'fancy-regex'
+import { fonts } from '../styles/constants'
 
 export const slugify = (str: string) =>
 	str
@@ -34,3 +35,18 @@ export const toAssetPath = (filename: string) =>
 
 export const toContentPath = (filename: string) =>
 	`${process.env.PUBLIC_URL}/content/${filename}`
+
+const escapeHtml = (str: string) =>
+	Object.assign(document.createElement('div'), { textContent: str }).innerHTML
+
+export const safelyWrapCjk = (str: string) =>
+	str
+		.split(/([\p{Script=Han}\uff01-\uff5e。、·《》〈〉]+)/u)
+		.map((x, i) =>
+			i % 2
+				? `<span style='font-family: ${fonts.cjk}'>${escapeHtml(
+						x,
+				  )}</span>`
+				: escapeHtml(x),
+		)
+		.join('')
