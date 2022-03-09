@@ -85,7 +85,7 @@ textarea {
 }
 
 main.container {
-	margin-bottom: 5em;
+	margin-bottom: 2em;
 }
 
 .magic-flex {
@@ -157,4 +157,8 @@ input:invalid {
 	left: 50%;
 	transform: translateX(-50%);
 	border-radius: 10px;
+}
+
+.grayed-out {
+	opacity: 0.6;
 }

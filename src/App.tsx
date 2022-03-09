@@ -1,5 +1,6 @@
 import { FC, StrictMode } from 'react'
 import { BrowserRouter as Router, NavLink } from 'react-router-dom'
+import { Footer } from './components/Footer'
 import { Routes } from './Routes'
 
 export const App: FC = () => {
@@ -18,6 +19,7 @@ export const App: FC = () => {
 					<main className='container'>
 						<Routes />
 					</main>
+					<Footer />
 				</Router>
 			</StrictMode>
 		</>

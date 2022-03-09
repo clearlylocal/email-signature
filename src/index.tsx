@@ -3,13 +3,7 @@ import ReactDOM from 'react-dom'
 import 'chota/dist/chota.css' // can't use .min.css due to CRA transpiling bug
 import './styles/index.css'
 import { App } from './App'
-import { joinPath } from './utils/path'
-
-fetch(joinPath('build-timestamp.txt')).then(async (res) => {
-	const ts = await res.text()
-
-	console.info('App last built', new Date(Number(ts)))
-})
+import buildInfo from './buildInfo.json'
 
 ReactDOM.render(
 	<React.StrictMode>
@@ -17,3 +11,5 @@ ReactDOM.render(
 	</React.StrictMode>,
 	document.getElementById('root'),
 )
+
+console.info(`Build ${buildInfo.hash}\n${buildInfo.ts}`)

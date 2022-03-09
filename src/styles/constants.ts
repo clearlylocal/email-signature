@@ -24,7 +24,7 @@ const _sizes = {
 	logoWidth: 150,
 }
 
-const MULTIPLIER = 1
+const MULTIPLIER = .9
 
 export const sizes = Object.fromEntries(
 	Object.entries(_sizes).map(([k, v]) => [

@@ -5,3 +5,4 @@ package-lock.json
 src/components/SignatureTable.tsx
 public/content
 _i18n.json
+buildInfo.json

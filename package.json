@@ -15,12 +15,9 @@
 		"snarkdown": "^2.0.0"
 	},
 	"scripts": {
-		"start": "PORT=3001 concurrently -k -n TSC,Node -c yellow,cyan \"npm run start-react\" \"npm run watch-content\"",
+		"start": "./scripts/update-build-info.sh && PORT=3001 concurrently -k -n TSC,Node -c yellow,cyan \"npm run start-react\" \"npm run watch-content\"",
 		"start-react": "react-app-rewired start",
-		"build-timestamp": "node -e \"fs.writeFileSync('./public/build-timestamp.txt', String(Date.now()))\"",
-		"// chota-css-var-hack": "cp ./node_modules/chota/dist/chota.min.css ./src/styles/vendor/chota.min.css",
-		"//": "npm run chota-css-var-hack",
-		"build": "node scripts/renderContent.mjs && npm run build-timestamp && react-app-rewired build",
+		"build": "./scripts/update-build-info.sh && node scripts/renderContent.mjs && react-app-rewired build",
 		"test": "react-app-rewired test",
 		"eject": "react-scripts eject",
 		"predeploy": "npm run build",
