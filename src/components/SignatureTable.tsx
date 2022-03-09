@@ -125,7 +125,14 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                   fontSize: sizes.textLarge,
                                 }}
                               >
-                                <img width={sizes.logoWidth} src={toAssetPath(tr.logoFull)} alt='' />
+                                <img
+                                  alt=''
+                                  width={sizes.logoWidth}
+                                  style={{
+                                    width: sizes.logoWidth,
+                                  }}
+                                  src={toAssetPath(tr.logoFull)}
+                                />
                               </span>
                             </span>
                           </td>
