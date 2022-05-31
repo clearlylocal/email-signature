@@ -24,11 +24,12 @@ const _sizes = {
 	logoWidth: 150,
 }
 
-const MULTIPLIER = .9
+// adjust to scale the entire signature up or down
+const SCALE = 0.9
 
 export const sizes = Object.fromEntries(
 	Object.entries(_sizes).map(([k, v]) => [
 		k,
-		parseFloat((v * MULTIPLIER).toFixed(1)),
+		parseFloat((v * SCALE).toFixed(1)),
 	]),
 ) as typeof _sizes
