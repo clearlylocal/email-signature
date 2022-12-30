@@ -3,7 +3,7 @@ import { colors, fonts, sizes } from '../styles/constants'
 import { SignatureInfo } from '../types/signatureInfo'
 import snarkdown from 'snarkdown'
 import { QrCode } from './QrCode'
-import { Translations, langs } from '../i18n/i18n'
+import { Translations, langs, renderPlaceholders } from '../i18n/i18n'
 import { safelyWrapCjk, toAssetPath } from '../utils/formatters'
 import { pipe } from 'fp-ts/lib/function'
 import { HtmlEmailLink } from './HtmlEmailLink'
@@ -14,9 +14,22 @@ type Props = {
   qrCodeDataUri: string
 } & SignatureInfo
 
+// https://stackoverflow.com/questions/57964557/how-can-i-add-types-to-use-intl-listformat-in-node-v12
+declare namespace Intl {
+  class ListFormat {
+    constructor(locales?: string | string[], options?: unknown);
+    public format: (items: string[]) => string;
+  }
+}
+
 export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translations: tr, ...props }) => {
   const currentLang = props.lang
   const altLang = langs.find((x) => x !== currentLang)!
+
+  const phoneUsages = [
+    props.phone.usedForWechat && tr.wechat,
+    props.phone.usedForWhatsapp && tr.whatsapp,
+  ].filter((x): x is string => typeof x === 'string')
 
   return (
     <table style={{ direction: 'ltr', borderCollapse: 'collapse' }}>
@@ -236,12 +249,17 @@ export const SignatureTable: FC<Props> = ({ qrCodeSize, qrCodeDataUri, translati
                                                       }}
                                                     >
                                                       <HtmlEmailLink
-                                                        href={`tel:${props.phone.number}`}
-
+                                                        href={`tel:${props.phone.number.replaceAll(/[^\d+]/g, '')}`}
                                                       >
                                                         {props.phone.number}
                                                       </HtmlEmailLink>
-                                                      {props.phone.usedForWechat ? ` ${tr.wechat}` : null}
+                                                      {
+                                                        phoneUsages.some(Boolean)
+                                                          ? tr.wordDelim + renderPlaceholders(
+                                                            tr.parens,
+                                                            { content: new Intl.ListFormat(tr.locale).format(phoneUsages) }
+                                                          ) : null
+                                                      }
                                                     </td>
                                                   </tr>
                                                 </tbody>

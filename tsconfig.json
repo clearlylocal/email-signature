@@ -1,10 +1,10 @@
 {
 	"compilerOptions": {
 		"downlevelIteration": true,
-		"target": "es2017",
+		"target": "es2021",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-		"lib": ["dom", "dom.iterable", "esnext"],
+		"lib": ["esnext", "dom", "dom.iterable", "ES2020", "ES2020.Intl", "es2021.intl", "es2021"],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"esModuleInterop": true,

@@ -10,6 +10,7 @@ export type SignatureInfo = {
 	phone: {
 		number: string
 		usedForWechat: boolean
+		usedForWhatsapp: boolean
 	}
 	email: string
 	officeAddress: string

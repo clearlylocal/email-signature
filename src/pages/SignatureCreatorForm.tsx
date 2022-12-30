@@ -15,7 +15,7 @@ const init: SignatureInfo = {
 		zh: '杜娟',
 	},
 	jobTitle: 'Senior Data Wrangler',
-	phone: { number: '+86 138 8888 8888', usedForWechat: false },
+	phone: { number: '+86 138 8888 8888', usedForWechat: false, usedForWhatsapp: false },
 	email: 'jane.doe@clearlyloc.com',
 	officeAddress: localeAgnostic.addresses[0].value,
 }
@@ -24,29 +24,40 @@ const defaultValues: SignatureInfo =
 	JSON.parse(localStorage.getItem('signatureCreator') ?? 'null') ?? init
 
 export const SignatureCreatorForm: FC = () => {
-	const { register, handleSubmit, getValues } = useForm<SignatureInfo>({
+	const { register, handleSubmit, getValues, setValue } = useForm<SignatureInfo>({
 		defaultValues,
 	})
 
 	const formRef = useRef<HTMLFormElement>(null)
 
 	const updateValidationMessages = useCallback(() => {
-		for (const input of formRef.current?.querySelectorAll('input') ?? []) {
-			const validationEl = input.nextElementSibling
+		for (const validated of formRef.current?.querySelectorAll('.validated') ??
+			[]) {
 
-			if (
-				validationEl &&
-				validationEl.classList.contains('validation-msg')
-			) {
-				let { validationMessage, validity } = input
+			const validationEl = validated.querySelector('.validation-msg')
 
-				if (!validity.valueMissing && validity.patternMismatch) {
-					validationMessage =
-						input.dataset.patternMsg ?? validationMessage
-				}
+			if (validationEl) {
+				const msgs = [...validated.querySelectorAll('input')].map((input) => {
+
+					let { validationMessage, validity } = input
+
+					if (
+						!validity.valueMissing &&
+						validity.patternMismatch
+					) {
+						validationMessage =
+							input.dataset.patternMsg ??
+							validationMessage
+					}
+
+					return validationMessage
+				})
+
+				const validationMessage = msgs.find(Boolean) ?? ''
 
 				validationEl.textContent = validationMessage
 			}
+
 		}
 	}, [])
 
@@ -55,6 +66,19 @@ export const SignatureCreatorForm: FC = () => {
 	useEffect(() => {
 		// once on load
 		updateValidationMessages()
+
+		for (const el of formRef.current?.querySelectorAll('input') ?? []) {
+			// if (el.list) continue
+
+			let o: any = init
+
+			for (const x of el.name.split('.')) {
+				o = o?.[x]
+			}
+
+			el.placeholder = String(o)
+		}
+
 	}, [updateValidationMessages])
 
 	const changeHandler = useCallback(
@@ -78,13 +102,29 @@ export const SignatureCreatorForm: FC = () => {
 			| React.MouseEvent<HTMLInputElement>,
 	) => {
 		savedOfficeAddress.current = values.officeAddress
-
+		e.currentTarget.placeholder = values.officeAddress
 		e.currentTarget.value = ''
 	}
 
-	const revertOfficeAddress = (e: React.FocusEvent<HTMLInputElement>) => {
-		e.currentTarget.value =
-			e.currentTarget.value || savedOfficeAddress.current
+	const revertOfficeAddress = (
+		e:
+			| React.FocusEvent<HTMLInputElement>
+			| React.KeyboardEvent<HTMLInputElement>,
+	) => {
+		if (!(e.nativeEvent instanceof KeyboardEvent) || e.nativeEvent.key === 'Escape') {
+			setValue(
+				e.currentTarget.name,
+				e.currentTarget.value || savedOfficeAddress.current,
+			)
+
+			// re-trigger validation
+			e.currentTarget.dispatchEvent(
+				new Event('input', {
+					bubbles: true,
+					cancelable: true,
+				}),
+			)
+		}
 	}
 
 	return (
@@ -98,7 +138,7 @@ export const SignatureCreatorForm: FC = () => {
 					onInput={handleSubmit(changeHandler)}
 				>
 					<div className='magic-flex'>
-						<div className='spaced'>
+						<div className='spaced validated'>
 							<fieldset>
 								<legend>Template language</legend>
 								<label>
@@ -126,7 +166,7 @@ export const SignatureCreatorForm: FC = () => {
 							<div className='validation-msg'></div>
 						</div>
 
-						<div className='spaced col-first'>
+						<div className='spaced validated col-first'>
 							<label>
 								English name
 								<input required name='name.en' ref={register} />
@@ -134,7 +174,7 @@ export const SignatureCreatorForm: FC = () => {
 							</label>
 						</div>
 
-						<div className='spaced col-last'>
+						<div className='spaced validated col-last'>
 							<label>
 								Chinese name (optional)
 								<input name='name.zh' ref={register} />
@@ -142,7 +182,7 @@ export const SignatureCreatorForm: FC = () => {
 							</label>
 						</div>
 
-						<div className='spaced'>
+						<div className='spaced validated'>
 							<label>
 								Job title
 								<input
@@ -154,7 +194,7 @@ export const SignatureCreatorForm: FC = () => {
 							</label>
 						</div>
 
-						<div className='spaced'>
+						<div className='spaced validated'>
 							<label>
 								Work email
 								<input
@@ -169,36 +209,48 @@ export const SignatureCreatorForm: FC = () => {
 							</label>
 						</div>
 
-						<div className='spaced'>
+						<div className='spaced validated'>
 							<label>
 								Phone number (including country code)
 								<input
 									type='tel'
 									name='phone.number'
 									ref={register}
-									pattern='\+[\d ]+'
-									data-pattern-msg='Must start with a country code in the format +XX (e.g. +86 for China) and contain only numbers and spaces'
+									pattern='\+[\d\p{P}\p{Z}]+'
+									data-pattern-msg='Must start with “+” and a country code (e.g. +86 for China) and include only numbers, spaces, or punctuation'
 								/>
-								<div className='validation-msg'></div>
 							</label>
 
-							<label className='secondary-field'>
-								Used for WeChat?
-								<input
-									type='checkbox'
-									name='phone.usedForWechat'
-									ref={register}
-								/>
-							</label>
+							<div className='secondary-field'>
+								<label className='inline-label'>
+									WeChat?
+									<input
+										type='checkbox'
+										name='phone.usedForWechat'
+										ref={register}
+									/>
+								</label>
+
+								<label className='inline-label'>
+									WhatsApp?
+									<input
+										type='checkbox'
+										name='phone.usedForWhatsapp'
+										ref={register}
+									/>
+								</label>
+							</div>
+							<div className='validation-msg'></div>
 						</div>
 
-						<div className='spaced'>
+						<div className='spaced validated'>
 							<label>
 								Office address
 								<input
 									onClick={blankOutOfficeAddress}
 									onFocus={blankOutOfficeAddress}
 									onBlur={revertOfficeAddress}
+									onKeyDown={revertOfficeAddress}
 									required
 									type='text'
 									name='officeAddress'

@@ -8,3 +8,6 @@ export type Translations = typeof _i18n['en']
 
 export const i18n: Record<Lang, Translations> = _i18n
 export const localeAgnostic = _i18n['*']
+
+export const renderPlaceholders = (str: string, data: Record<string, string>) =>
+	str.replaceAll(/\{\{(\w+)\}\}/gu, (_, m) => data[m])
